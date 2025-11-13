@@ -19,6 +19,11 @@ export default function FormularioSinistro() {
     { id: 'TOPBUS', nome: 'Consórcio Metropolitano' }
   ];
 
+  // Garante que sempre há pelo menos uma opção
+  const opcoesEmpresa = empresas.length > 0 ? empresas : [
+    { id: 'GENERICA', nome: 'Empresa' }
+  ];
+
   const adicionarTestemunha = () => {
     setTestemunhas([...testemunhas, { nome: '', telefone: '' }]);
   };
@@ -195,20 +200,23 @@ export default function FormularioSinistro() {
               </label>
               <div className="relative">
                 <button
-                  onClick={() => setDropdownAberto(!dropdownAberto)}
+                  type="button"
+                  onClick={() => setDropdownAberto((v) => !v)}
                   className="w-full px-5 py-4 bg-white border-2 border-gray-300 rounded-xl text-left flex items-center justify-between hover:border-gray-400 transition-all duration-200 focus:outline-none focus:border-slate-600 focus:ring-4 focus:ring-slate-100"
+                  aria-haspopup="listbox"
+                  aria-expanded={dropdownAberto}
                 >
                   <span className={`font-medium ${unidade ? 'text-gray-900' : 'text-gray-500'}`}>
-                    {unidade ? empresas.find(e => e.id === unidade)?.nome : 'Selecione a empresa'}
+                    {unidade ? opcoesEmpresa.find(e => e.id === unidade)?.nome : 'Selecione a empresa'}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${dropdownAberto ? 'rotate-180' : ''}`} />
                 </button>
-                
                 {dropdownAberto && (
-                  <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden animate-slideDown">
-                    {empresas.map((empresa) => (
+                  <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden animate-slideDown" role="listbox">
+                    {opcoesEmpresa.map((empresa) => (
                       <button
                         key={empresa.id}
+                        type="button"
                         onClick={() => {
                           setUnidade(empresa.id);
                           setDropdownAberto(false);
@@ -218,6 +226,8 @@ export default function FormularioSinistro() {
                             ? 'bg-slate-50 text-slate-900 font-semibold' 
                             : 'text-gray-700 hover:bg-slate-50'
                         }`}
+                        role="option"
+                        aria-selected={unidade === empresa.id}
                       >
                         {empresa.nome}
                       </button>

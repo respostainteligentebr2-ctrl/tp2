@@ -18,15 +18,14 @@ export default function App() {
   const handleLogin = (e) => {
     e.preventDefault()
     if (!DASHBOARD_LOGIN || !DASHBOARD_PASSWORD) {
-      setErro('Credenciais do painel não configuradas.')
+      setErro('Acesso temporariamente indisponível. Contate o administrador para configurar as credenciais do painel.')
       return
     }
-
-    if (loginInput === DASHBOARD_LOGIN && senhaInput === DASHBOARD_PASSWORD) {
+    if (loginInput.trim() === DASHBOARD_LOGIN && senhaInput === DASHBOARD_PASSWORD) {
       setDashboardAuth(true)
       setErro('')
     } else {
-      setErro('Login ou senha incorretos')
+      setErro('Login ou senha incorretos. Verifique se está digitando exatamente como cadastrado.')
       setSenhaInput('')
     }
   }
