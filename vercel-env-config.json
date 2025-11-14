@@ -1,0 +1,47 @@
+{
+  "environmentVariables": [
+    {
+      "name": "VITE_DASHBOARD_LOGIN",
+      "value": "sinistro",
+      "environments": ["production", "preview", "development"],
+      "description": "Usuário para acessar o painel de gestão de sinistros"
+    },
+    {
+      "name": "VITE_DASHBOARD_PASSWORD",
+      "value": "139702",
+      "environments": ["production", "preview", "development"],
+      "description": "Senha para acessar o painel de gestão de sinistros"
+    },
+    {
+      "name": "VITE_APPS_SCRIPT_URL",
+      "value": "https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec",
+      "environments": ["production", "preview", "development"],
+      "description": "URL do Google Apps Script para processamento de sinistros"
+    }
+  ],
+  "instructions": {
+    "platform": "Vercel",
+    "project": "topbusanalise",
+    "steps": [
+      "Acesse https://vercel.com/dashboard",
+      "Selecione o projeto 'topbusanalise'",
+      "Vá para Settings → Environment Variables",
+      "Para cada variável acima, clique em 'Add New'",
+      "Preencha Nome e Valor",
+      "Selecione Production, Preview e Development",
+      "Clique em Save",
+      "Após adicionar as 3 variáveis, vá para Deployments",
+      "Clique no último deployment e escolha Redeploy",
+      "Selecione 'Use existing Build Cache'"
+    ],
+    "testCredentials": {
+      "username": "sinistro",
+      "password": "139702"
+    },
+    "expectedBehavior": [
+      "Login funciona no painel de gestão",
+      "Dropdown de empresas abre corretamente",
+      "Formulário de sinistro carrega sem erros"
+    ]
+  }
+}

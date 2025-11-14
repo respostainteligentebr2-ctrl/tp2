@@ -1,0 +1,69 @@
+VARIÁVEIS DE AMBIENTE - VERCEL SETUP
+====================================
+
+🔐 CREDENCIAIS PARA CONFIGURAR NO VERCEL
+
+Acesse: https://vercel.com → Seu Projeto → Settings → Environment Variables
+
+═══════════════════════════════════════════════════════════════════════════════
+
+VARIÁVEL 1: VITE_DASHBOARD_LOGIN
+─────────────────────────────────
+Nome:      VITE_DASHBOARD_LOGIN
+Valor:     sinistro
+Ambiente:  Production ✓ Preview ✓ Development ✓
+
+VARIÁVEL 2: VITE_DASHBOARD_PASSWORD
+────────────────────────────────────
+Nome:      VITE_DASHBOARD_PASSWORD
+Valor:     139702
+Ambiente:  Production ✓ Preview ✓ Development ✓
+
+VARIÁVEL 3: VITE_APPS_SCRIPT_URL
+─────────────────────────────────
+Nome:      VITE_APPS_SCRIPT_URL
+Valor:     https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
+Ambiente:  Production ✓ Preview ✓ Development ✓
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASSO A PASSO COMPLETO:
+
+1. Acesse https://vercel.com/dashboard
+
+2. Clique no projeto "topbusanalise"
+
+3. Vá para Settings (Configurações) → Environment Variables
+
+4. Para cada variável acima:
+   • Clique em "Add New"
+   • Preencha NOME e VALOR
+   • Selecione os 3 ambientes: Production, Preview, Development
+   • Clique em "Save"
+
+5. Após adicionar as 3 variáveis, vá para Deployments
+
+6. Clique no último deployment → Redeploy
+
+7. Escolha "Use existing Build Cache" → Redeploy
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ TESTE APÓS DEPLOY:
+
+1. Acesse seu site no Vercel
+2. Clique em "Painel" (canto superior direito)
+3. Digite: sinistro / 139702
+4. Você deve conseguir acessar o painel de gestão
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❓ DÚVIDAS?
+
+Se o login não funcionar:
+• Verifique se as 3 variáveis foram adicionadas corretamente
+• Limpe o cache do navegador (Ctrl+Shift+Delete)
+• Espere 5 minutos após o redeploy
+• Tente incógnito/modo privado
+
+═══════════════════════════════════════════════════════════════════════════════
