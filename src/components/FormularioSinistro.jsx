@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { FileText, X, ChevronDown, Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FileText, X, Loader2 } from 'lucide-react';
 
 export default function FormularioSinistros() {
-  const [unidade, setUnidade] = useState('');
-  const [dropdownAberto, setDropdownAberto] = useState(false);
+  // Empresa fixada como TOPBUS
+  const unidade = 'TOPBUS';
   const [data, setData] = useState('');
   const [local, setLocal] = useState('');
   const [numeroCarro, setNumeroCarro] = useState('');
@@ -22,26 +22,9 @@ export default function FormularioSinistros() {
   const [loginInput, setLoginInput] = useState('');
   const [senhaInput, setSenhaInput] = useState('');
   const [sinistros, setSinistros] = useState([]);
-  
-  const dropdownRef = useRef(null);
 
   // URL DO APPS SCRIPT - PREENCHIDA COM O ID CORRETO
   const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbw0UZ26acbgzPjAqpSuDSp3HRSqzg1LJuO2vlSN7CvakmSKo7lZ1PwGyqT8ve9Ueu1Stg/exec';
-
-  const empresas = [
-    { id: 'BELO_MONTE', nome: 'Belo Monte Transportes', cor: '#047857' },
-    { id: 'TOPBUS', nome: 'TopBus Transportes', cor: '#1e40af' }
-  ];
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownAberto(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -89,7 +72,7 @@ export default function FormularioSinistros() {
   const handleSubmit = async () => {
     setErro('');
     
-    if (!unidade || !data || !local || !numeroCarro || !responsabilidade) {
+    if (!data || !local || !numeroCarro || !responsabilidade) {
       setErro('Preencha todos os campos obrigatórios');
       return;
     }
@@ -165,9 +148,6 @@ export default function FormularioSinistros() {
     setFotosPreview([]);
     setGuiaAberto(false);
   };
-
-  const empresaSelecionada = empresas.find(e => e.id === unidade);
-  const corPrimaria = empresaSelecionada?.cor || '#1e293b';
 
   const handleLogin = () => {
     const loginCorreto = import.meta.env.VITE_DASHBOARD_LOGIN || 'sinistro';
@@ -438,57 +418,17 @@ export default function FormularioSinistros() {
               </div>
             )}
 
-            {/* DROPDOWN DE EMPRESA - CORRIGIDO E DINÂMICO */}
+            {/* Empresa fixada como TOPBUS */}
             <div className="animate-fadeIn">
-              <label className="block text-sm font-semibold text-gray-800 mb-3">
-                Empresa *
-              </label>
-              <div className="relative z-10" ref={dropdownRef}>
-                <button
-                  type="button"
-                  onClick={() => setDropdownAberto(!dropdownAberto)}
-                  className="w-full px-5 py-4 bg-white border-2 border-gray-300 rounded-xl text-left flex items-center justify-between hover:border-gray-400 transition-all duration-200 focus:outline-none focus:border-slate-600 focus:ring-4 focus:ring-slate-100"
-                  aria-haspopup="listbox"
-                  aria-expanded={dropdownAberto}
-                >
-                  <span className={`font-medium ${unidade ? 'text-gray-900' : 'text-gray-500'}`}>
-                    {empresaSelecionada?.nome || 'Selecione a empresa'}
-                  </span>
-                  <ChevronDown 
-                    className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${dropdownAberto ? 'rotate-180' : ''}`} 
-                  />
-                </button>
-                
-                {dropdownAberto && (
-                  <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl overflow-auto animate-slideDown" style={{ maxHeight: '300px' }}>
-                    {empresas.map((empresa) => (
-                      <button
-                        key={empresa.id}
-                        type="button"
-                        onClick={() => {
-                          setUnidade(empresa.id);
-                          setDropdownAberto(false);
-                        }}
-                        className={`w-full px-5 py-4 text-left transition-all duration-200 flex items-center gap-3 ${
-                          unidade === empresa.id 
-                            ? 'bg-slate-50 font-semibold' 
-                            : 'hover:bg-slate-50'
-                        }`}
-                      >
-                        <div 
-                          className="w-3 h-3 rounded-full flex-shrink-0" 
-                          style={{ backgroundColor: empresa.cor }}
-                        />
-                        <span className="text-gray-800">{empresa.nome}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
+              <div className="px-5 py-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+                <label className="block text-sm font-semibold text-blue-900 mb-1">
+                  Empresa
+                </label>
+                <span className="text-lg font-bold text-blue-700">TopBus Transportes</span>
               </div>
             </div>
 
-            {unidade && (
-              <div className="space-y-8 animate-fadeIn" style={{ borderLeftWidth: '4px', borderLeftColor: corPrimaria, paddingLeft: '2rem' }}>
+            <div className="space-y-8 animate-fadeIn" style={{ borderLeftWidth: '4px', borderLeftColor: '#1e40af', paddingLeft: '2rem' }}>
                 
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -813,7 +753,7 @@ export default function FormularioSinistros() {
                   </button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
 
