@@ -730,8 +730,7 @@ export default function FormularioSinistros() {
                     type="button"
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="flex-1 py-4 rounded-xl text-white font-bold text-lg shadow-lg transition-all duration-300 btn-hover disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    style={{ backgroundColor: corPrimaria }}
+                    className="flex-1 py-4 rounded-xl text-white font-bold text-lg shadow-lg transition-all duration-300 btn-hover disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700"
                   >
                     {loading ? (
                       <>
@@ -752,12 +751,11 @@ export default function FormularioSinistros() {
                   </button>
                 </div>
               </div>
-            </div>
           </div>
         </div>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          Sistema de Gestão de Sinistros © 2025
+          Sistema de Gestão de Sinistros &copy; 2025
         </div>
       </div>
     </div>

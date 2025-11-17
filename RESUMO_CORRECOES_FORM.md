@@ -1,7 +1,11 @@
   
 # 🔧 RESUMO DE CORREÇÕES - FormularioSinistro.jsx
   
+curl -L -X POST "https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec" \
+  -H "Content-Type: application/json" \
+  -d '{"unidade":"TOPBUS","data":"2025-11-13T14:30","local":"Av. Paulista, 1000 - São Paulo, SP","numeroCarro":"TB-2450","motorista":"Carlos Mendes Silva","chapa":"2450","responsabilidade":"TERCEIRO","testemunhas":[{"nome":"Maria Santos","telefone":"(11) 99876-5432"}],"descricao":"Teste via curl"}'
 
+  
   
 ## Commit: a199fcd
   
@@ -24,7 +28,6 @@
 - Cliques fora não fechavam o menu
 - Altura sem limite causava overflow
 
-  
 ### ✅ Solução Implementada
   
 
@@ -43,8 +46,8 @@ useEffect(() => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownAberto(false);
     }
+    }
   };
-  document.addEventListener('mousedown', handleClickOutside);
   return () => document.removeEventListener('mousedown', handleClickOutside);
 }, []);
 ```
@@ -61,7 +64,7 @@ useEffect(() => {
 
 ```jsx
 const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
-```
+const scriptUrl = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
 
   
 ### ✅ Agora
@@ -220,7 +223,7 @@ const [erro, setErro] = useState('');
 const [telaAtiva, setTelaAtiva] = useState('form');
 const [autenticado, setAutenticado] = useState(false);
 const [sinistros, setSinistros] = useState([]);
-```
+const [sinistros, setSinistros] = useState([]);
 
   
 ### ✅ Validações
