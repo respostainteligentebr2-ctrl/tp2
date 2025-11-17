@@ -26,7 +26,7 @@ export default function FormularioSinistros() {
   const dropdownRef = useRef(null);
 
   // URL DO APPS SCRIPT - PREENCHIDA COM O ID CORRETO
-  const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec';
+  const APPS_SCRIPT_URL = import.meta.env.VITE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbw0UZ26acbgzPjAqpSuDSp3HRSqzg1LJuO2vlSN7CvakmSKo7lZ1PwGyqT8ve9Ueu1Stg/exec';
 
   const empresas = [
     { id: 'BELO_MONTE', nome: 'Belo Monte Transportes', cor: '#047857' },
