@@ -429,7 +429,6 @@ export default function FormularioSinistros() {
             </div>
 
             <div className="space-y-8 animate-fadeIn" style={{ borderLeftWidth: '4px', borderLeftColor: '#1e40af', paddingLeft: '2rem' }}>
-                
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     Dados do Sinistro
