@@ -52,7 +52,6 @@ Se o site foi deletado ou não consegue restaurar:
 Se estiver com problemas no Netlify, considere:
 
 ### 1. Vercel
-
 - **Site:** https://vercel.com
 - **Vantagens:** Integração GitHub, deploys automáticos
 - **Configuração:**
@@ -62,7 +61,6 @@ Se estiver com problemas no Netlify, considere:
   ```
 
 ### 2. Cloudflare Pages
-
 - **Site:** https://pages.cloudflare.com
 - **Vantagens:** CDN global, SSL gratuito
 - **Configuração:**
@@ -72,7 +70,6 @@ Se estiver com problemas no Netlify, considere:
   ```
 
 ### 3. GitHub Pages
-
 - **Gratuito com GitHub**
 - **Configuração:**
   ```bash
@@ -84,7 +81,6 @@ Se estiver com problemas no Netlify, considere:
   ```
 
 ### 4. Render
-
 - **Site:** https://render.com
 - **Vantagens:** Build automático, SSL
 - **Configuração:** Similar ao Netlify

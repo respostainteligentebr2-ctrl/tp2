@@ -34,7 +34,7 @@ echo ""
 echo "Enviando dados para o Apps Script..."
 echo ""
 
-RESPONSE=$(curl -s -L -X POST "$API_URL" \
+RESPONSE=$(curl -s -X POST "$API_URL" \
   -H "Content-Type: application/json" \
   -d "$PAYLOAD")
 

@@ -1,66 +1,52 @@
-# TOPBUS Sinistros v2.0
+# Sistema de Gestão de Sinistros v2.0
 
-Sistema de registro e acompanhamento de sinistros de frota com suporte a múltiplas unidades (TOPBUS e BELO MONTE).
+Sistema de registro e acompanhamento de sinistros de frota integrado com Google Sheets e Google Drive.
 
 ## 🏗️ Arquitetura
 
 ```
-Frontend React (Netlify)
+Frontend React (Vite + Netlify)
     ↓ HTTPS POST/GET
 Google Apps Script (Backend)
     ↓
-├─→ Google Sheets (2 abas separadas)
-│   ├── TOPBUS (gid=0)
-│   └── BELO_MONTE (gid=760103440)
-└─→ Google Drive (Imagens organizadas por unidade)
-    ├── TOPBUS/SIN-TB-XXXX/
-    └── BELO_MONTE/SIN-BM-XXXX/
+├─→ Google Sheets (Aba TOPBUS)
+└─→ Google Drive (Imagens organizadas)
+    └── TOPBUS/SIN-TB-XXXX/
 ```
 
 ## 📂 Estrutura do Projeto
 
 ```
-topbus-sinistros/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   ├── FormularioSinistro.jsx  # Formulário com seleção de unidade
-│   │   └── ListaSinistros.jsx      # Listagem com filtro por unidade
-│   ├── App.jsx
-│   ├── index.js
-│   └── index.css
-├── .env.local                       # Credenciais (NÃO COMMITAR)
-├── .env.example                     # Template
-├── .gitignore
-├── package.json
-├── tailwind.config.js
-├── netlify.toml
-├── .vscode/
-│   └── settings.json                # Configuração UTF-8
-└── README.md
+src/
+├── components/
+│   ├── BusIcon.jsx                  # Ícone do sistema
+│   ├── FormularioSinistro.jsx       # Formulário de registro
+│   └── ListaSinistros.jsx           # Listagem de sinistros
+├── App.jsx                          # Componente principal
+├── main.jsx                         # Entry point
+└── index.css                        # Estilos globais
 ```
 
 ## ⚙️ Funcionalidades
 
 ### Registro de Sinistros
 
-- ✅ **Seleção de Unidade**: TOPBUS ou BELO MONTE
+- ✅ Empresa fixada (TOPBUS)
 - ✅ Dados do acidente (data, local, veículo, motorista, chapa)
-- ✅ Identificação de culpabilidade (Motorista/Terceiro)
-- ✅ Dados de terceiros (nome, placa, veículo, telefone)
-- ✅ Testemunhas (múltiplas, dinâmico)
-- ✅ 8 categorias de fotos guiadas com câmera
-- ✅ Upload de documentos (BO, CNH, etc.)
+- ✅ Identificação de responsabilidade (Motorista/Terceiro)
+- ✅ Testemunhas (múltiplas)
+- ✅ Upload de fotos (mínimo 4)
+- ✅ Descrição detalhada
+- ✅ Protocolo automático: `SIN-TB-YYYYMMDD-HHMMSS-XXXX`
 - ✅ Validação completa de campos
-- ✅ Suporte UTF-8 (português brasileiro)
+- ✅ Integração com Google Sheets e Drive
 
-### Listagem
+### Dashboard (Acesso Restrito)
 
-- ✅ Filtro por unidade (Todas/TOPBUS/BELO MONTE)
+- ✅ Login com credenciais
+- ✅ Listagem de todos os sinistros
 - ✅ Busca por protocolo, local, motorista
-- ✅ Filtro por período (hoje, semana, mês)
-- ✅ Badge de empresa e culpabilidade
+- ✅ Visualização de detalhes
 - ✅ Links diretos para planilha e Drive
 
 ## 🚀 Setup Local
@@ -73,17 +59,18 @@ topbus-sinistros/
 ### 2. Instalação
 
 ```bash
-cd C:\Users\DELL\OneDrive\Desktop\TOPBUSDEV
+cd /workspaces/topbusanalise
 npm install
 ```
 
-### 3. Configurar Credenciais
+### 3. Configurar Variáveis de Ambiente
 
 Crie `.env.local` na raiz:
 
 ```env
-REACT_APP_APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbynbT_LfA0QClk7u7So3mfL9zjU9Q4Q-SDlPSbEASTCi3bbbUWd78EgbjiUfDVN5qP0Kg/exec
-REACT_APP_API_KEY=a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812
+VITE_APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
+VITE_DASHBOARD_LOGIN=sinistro
+VITE_DASHBOARD_PASSWORD=139702
 ```
 
 ### 4. Executar
@@ -94,99 +81,143 @@ npm start
 
 Acesse: `http://localhost:3000`
 
-## 📦 Deploy (Netlify)
+## 📦 Deploy
 
-### Opção A: Git (Recomendado)
+### Vercel (Recomendado)
 
-1. Conecte repositório no Netlify
+1. Conecte repositório no Vercel
 2. Configure variáveis de ambiente:
-   - `REACT_APP_APPS_SCRIPT_URL`
-   - `REACT_APP_API_KEY`
+   - `VITE_APPS_SCRIPT_URL`
+   - `VITE_DASHBOARD_LOGIN`
+   - `VITE_DASHBOARD_PASSWORD`
 3. Deploy automático a cada push
 
-### Opção B: CLI
+### Netlify
 
-```bash
-npm run build
-netlify deploy --prod
-```
+1. Conecte repositório no Netlify
+2. Build command: `npm run build`
+3. Publish directory: `dist`
+4. Configure as mesmas variáveis de ambiente
 
 ## 🔐 Segurança
 
 - `.env.local` **NÃO** é commitado (`.gitignore`)
-- API Key configurada no Apps Script (Propriedades)
-- Credenciais apenas em variáveis de ambiente
-- HTTPS obrigatório
+- Credenciais de dashboard apenas em variáveis de ambiente
+- API do Google Apps Script com acesso público controlado
+- HTTPS obrigatório (Vercel/Netlify)
 
-## 📊 Dados Segregados
+## 📊 Configuração Backend
 
-Cada unidade possui:
-- **Aba exclusiva** na planilha
-- **Pasta exclusiva** no Drive
-- **Protocolo único**: `SIN-TB-XXXX` ou `SIN-BM-XXXX`
+### Google Apps Script
+
+- **URL**: https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
+- **Funções**: doGet(), doPost(), gerarProtocolo(), salvarNoSheet(), criarPastaGoogleDrive()
+- **Timezone**: America/Sao_Paulo
+
+### Google Sheets
+
+- **Planilha ID**: `1ZtatcnU7jwHXrso5mSIMRFQIFFUhsihUyGvRK36klSo`
+- **Aba**: TOPBUS (gid=0)
+- **Colunas**: ID | DataHora | Local | Onibus | Motorista | Chapa | Terceiro | Testemunhas | Descricao | Imagens | PastaLink
+
+### Google Drive
+
+- **Pasta ID**: `1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4`
+- **Estrutura**: TOPBUS/SIN-TB-YYYYMMDD-HHMMSS-XXXX/
 
 ## 🛠️ Stack Tecnológica
 
-- **Frontend**: React 18, Tailwind CSS, Lucide Icons
-- **Backend**: Google Apps Script
-- **Banco**: Google Sheets (2 abas)
+- **Frontend**: React 18, Vite 4.5, Tailwind CSS 3.4
+- **Icons**: Lucide React
+- **Backend**: Google Apps Script (V8 runtime)
+- **Banco**: Google Sheets
 - **Storage**: Google Drive
-- **Deploy**: Netlify
-- **Encoding**: UTF-8
+- **Deploy**: Vercel / Netlify
+- **Node.js**: 22.x
 
-## 📝 IDs Configurados
+## 📝 Recursos Configurados
 
-| Recurso | ID |
-|---------|-----|
+| Recurso | ID/Valor |
+|---------|----------|
+| Apps Script URL | AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA |
 | Planilha | 1ZtatcnU7jwHXrso5mSIMRFQIFFUhsihUyGvRK36klSo |
 | Aba TOPBUS | gid=0 |
-| Aba BELO_MONTE | gid=760103440 |
-| Drive (Imagens) | 1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4 |
+| Drive | 1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4 |
 
 ## 🧪 Teste Completo
 
-1. Selecionar unidade (TOPBUS ou BELO MONTE)
-2. Preencher todos os campos
-3. Tirar mínimo 5 fotos (guiadas)
-4. Adicionar documentos (opcional)
+1. Acessar o formulário público
+2. Preencher todos os campos obrigatórios
+3. Adicionar mínimo 4 fotos
+4. Adicionar testemunhas (opcional)
 5. Registrar sinistro
-6. Verificar protocolo gerado
-7. Verificar planilha (aba correta)
-8. Verificar pasta no Drive
+6. Verificar protocolo gerado (SIN-TB-YYYYMMDD-HHMMSS-XXXX)
+7. Acessar dashboard com credenciais
+8. Verificar registro na planilha
+9. Verificar pasta criada no Drive
+
+## 📚 Scripts de Teste
+
+```bash
+cd /workspaces/topbusanalise/testes
+
+# Teste individual
+bash teste-01-topbus-colisao.sh
+
+# Teste completo
+bash teste-completo.sh
+```
 
 ## 📚 Documentação Adicional
 
-- `CONFIGURACAO_APPSCRIPT.md` - Setup backend
-- `COMANDOS_COPILOT.md` - Comandos VS Code
-- `CONFIGURACAO_FINAL.md` - Credenciais e IDs
+- `SISTEMA_FUNCIONAL.md` - Documentação completa do sistema
+- `APPS_SCRIPT_V3_DEPLOY.md` - Guia de deploy do Apps Script
+- `COMO_ATUALIZAR_APPS_SCRIPT.md` - Como atualizar o backend
+- `.github/copilot-instructions.md` - Instruções para o Copilot
 
 ## 🐛 Troubleshooting
 
-### Erro "Invalid API key"
+### Frontend não exibe
 
-Verifique `.env.local` e variáveis do Netlify
+```bash
+# Limpar cache e reiniciar
+rm -rf node_modules/.vite dist
+npm install
+npm start
+```
 
-### Imagens não salvam
+### Erro "React is not defined"
 
-Confirme permissões da pasta Drive
+Verifique se todos os componentes importam React:
+```javascript
+import React from 'react';
+```
 
-### Dados não aparecem
+### Erro ao enviar formulário
 
-Verifique se aba existe na planilha
+- Verifique `VITE_APPS_SCRIPT_URL` no `.env.local`
+- Teste a URL do Apps Script diretamente no navegador
+- Verifique logs do Apps Script
 
-### CORS blocked
+### Dashboard não autentica
 
-Reimplante Apps Script e atualize URL
+Confirme credenciais em `.env.local`:
+```env
+VITE_DASHBOARD_LOGIN=sinistro
+VITE_DASHBOARD_PASSWORD=139702
+```
 
-## 📞 Suporte
+## 📞 Logs e Debug
 
 Consulte logs:
+
 - **Frontend**: Chrome DevTools (F12) → Console
-- **Backend**: Google Apps Script → Executar → Logs
+- **Backend**: Google Apps Script → Execuções → Logs
+- **Build**: Terminal do Vite/Vercel/Netlify
 
 ---
 
 **Versão**: 2.0  
-**Status**: ✅ Produção  
-**Última atualização**: Novembro 2025  
-**Desenvolvido para**: TOPBUS e BELO MONTE
+**Status**: ✅ Em Produção  
+**Última atualização**: 20 de Novembro de 2025  
+**Commit**: 7a98cf2 - React import fix e remoção de nome da empresa

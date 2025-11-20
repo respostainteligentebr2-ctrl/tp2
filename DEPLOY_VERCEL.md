@@ -20,21 +20,18 @@
 ## 🎯 OPÇÃO 1: DEPLOY VIA DASHBOARD (MAIS RÁPIDO)
 
 ### Passo 1: Criar conta
-
-1. Acesse: <https://vercel.com>
+1. Acesse: https://vercel.com
 2. Clique em **"Sign Up"**
 3. Escolha **"Continue with GitHub"**
 4. Autorize o Vercel
 
 ### Passo 2: Importar projeto
-
 1. No dashboard, clique em **"Add New..."** → **"Project"**
 2. Clique em **"Import Git Repository"**
 3. Selecione: `guilhermholiveira-debug/topbusanalise`
 4. Clique em **"Import"**
 
 ### Passo 3: Configurar build
-
 O Vercel detecta automaticamente Vite, mas confirme:
 ```
 Framework Preset: Vite
@@ -44,7 +41,6 @@ Root Directory: ./
 ```
 
 ### Passo 4: Adicionar variáveis de ambiente
-
 Antes de fazer deploy, adicione:
 
 ```
@@ -56,7 +52,6 @@ Valor: a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812
 ```
 
 ### Passo 5: Deploy
-
 1. Clique em **"Deploy"**
 2. Aguarde 1-2 minutos
 3. Você receberá uma URL: `https://topbusanalise.vercel.app` ou similar
@@ -97,20 +92,17 @@ Valor: a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812
 Se preferir linha de comando:
 
 ### Passo 1: Instalar Vercel CLI
-
 ```bash
 npm install -g vercel
 ```
 
 ### Passo 2: Login
-
 ```bash
 vercel login
 # Use seu email ou GitHub
 ```
 
 ### Passo 3: Deploy
-
 ```bash
 cd /workspaces/topbusanalise
 vercel --prod
@@ -125,7 +117,6 @@ Siga as instruções:
 - Override settings? **N**
 
 ### Passo 4: Adicionar variáveis de ambiente
-
 ```bash
 vercel env add VITE_APPS_SCRIPT_URL production
 # Cole a URL do Apps Script quando solicitado
@@ -135,7 +126,6 @@ vercel env add VITE_API_KEY production
 ```
 
 ### Passo 5: Redeploy com variáveis
-
 ```bash
 vercel --prod
 ```
@@ -162,21 +152,18 @@ vercel --prod
 Após deploy no Vercel:
 
 ### 1. Testar URL
-
 - [ ] Acesse a URL fornecida (ex: `topbusanalise.vercel.app`)
 - [ ] Verifique se CSS está carregando
 - [ ] Teste o dropdown de empresas
 - [ ] Veja se cores mudam (TOPBUS azul / BELO MONTE verde)
 
 ### 2. Testar formulário
-
 - [ ] Preencha todos os campos
 - [ ] Adicione 4 fotos
 - [ ] Clique em "Registrar Sinistro"
 - [ ] Verifique se recebe protocolo de sucesso
 
 ### 3. Verificar integração
-
 - [ ] Abra Google Sheets: https://docs.google.com/spreadsheets/d/1ZtatcnU7jwHXrso5mSIMRFQIFFUhsihUyGvRK36klSo
 - [ ] Confirme dados na aba TOPBUS ou BELO_MONTE
 - [ ] Verifique pasta no Drive: https://drive.google.com/drive/folders/1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4
