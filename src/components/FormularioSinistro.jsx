@@ -419,16 +419,6 @@ export default function FormularioSinistros() {
               </div>
             )}
 
-            {/* Empresa fixada como TOPBUS */}
-            <div className="animate-fadeIn">
-              <div className="px-5 py-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
-                <label className="block text-sm font-semibold text-blue-900 mb-1">
-                  Empresa
-                </label>
-                <span className="text-lg font-bold text-blue-700">TopBus Transportes</span>
-              </div>
-            </div>
-
             <div className="space-y-8 animate-fadeIn" style={{ borderLeftWidth: '4px', borderLeftColor: '#1e40af', paddingLeft: '2rem' }}>
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">

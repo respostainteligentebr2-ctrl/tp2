@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Ícone de ônibus em linha contínua com traços uniformes
 export default function BusIcon({ className = '', size = 32, color = '#222' }) {
   return (
