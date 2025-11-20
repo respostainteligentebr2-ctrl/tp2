@@ -4,8 +4,8 @@ Sistema de registro e acompanhamento de sinistros de frota integrado com Google 
 
 ## 🏗️ Arquitetura
 
-```
-Frontend React (Vite + Netlify)
+```text
+Frontend React (Vite + Vercel)
     ↓ HTTPS POST/GET
 Google Apps Script (Backend)
     ↓
@@ -16,15 +16,7 @@ Google Apps Script (Backend)
 
 ## 📂 Estrutura do Projeto
 
-%% Diagrama da arquitetura
-graph TD
-    A[Frontend React (Vite + Netlify)]
-    A -->|HTTPS POST/GET| B[Google Apps Script (Backend)]
-    B --> C[Google Sheets (Aba TOPBUS)]
-    B --> D[Google Drive (Imagens organizadas)]
-    D --> E[TOPBUS/SIN-TB-XXXX/]
-
-```
+```text
 src/
 ├── components/
 │   ├── BusIcon.jsx                  # Ícone do sistema
@@ -140,8 +132,8 @@ Acesse: `http://localhost:3000`
 - **Backend**: Google Apps Script (V8 runtime)
 - **Banco**: Google Sheets
 - **Storage**: Google Drive
-- **Deploy**: Vercel / Netlify
-- **Node.js**: 22.x
+- **Deploy**: Vercel
+- **Node.js**: 20.x
 
 ## 📝 Recursos Configurados
 
