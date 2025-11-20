@@ -37,18 +37,18 @@
 
 O Vercel detecta automaticamente Vite, mas confirme:
 
-```
+```yaml
 Framework Preset: Vite
 Build Command: npm run build
 Output Directory: dist
 Root Directory: ./
 ```
 
-### Passo 4: Adicionar variáveis de ambiente
+### Passo 4: Adicionar variáveis de ambiente via CLI
 
 Antes de fazer deploy, adicione:
 
-```
+```env
 VITE_APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
 VITE_API_KEY=a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812
 ```
@@ -76,14 +76,14 @@ VITE_API_KEY=a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812
 1. Vá na seção **DNS** ou **Nameservers**
 2. **Remova** os registros do Netlify:
 
-   ```
+   ```dns
    A record: 75.2.60.5 (Netlify)
    CNAME: xxx.netlify.app
    ```
 
 3. **Adicione** os registros do Vercel:
 
-   ```
+   ```dns
    A record: 76.76.21.21
    CNAME: cname.vercel-dns.com
    ```

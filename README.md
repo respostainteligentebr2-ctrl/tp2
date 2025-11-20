@@ -16,6 +16,14 @@ Google Apps Script (Backend)
 
 ## 📂 Estrutura do Projeto
 
+%% Diagrama da arquitetura
+graph TD
+    A[Frontend React (Vite + Netlify)]
+    A -->|HTTPS POST/GET| B[Google Apps Script (Backend)]
+    B --> C[Google Sheets (Aba TOPBUS)]
+    B --> D[Google Drive (Imagens organizadas)]
+    D --> E[TOPBUS/SIN-TB-XXXX/]
+
 ```
 src/
 ├── components/
@@ -110,7 +118,7 @@ Acesse: `http://localhost:3000`
 
 ### Google Apps Script
 
-- **URL**: https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
+- **URL**: [https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec](https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec)
 - **Funções**: doGet(), doPost(), gerarProtocolo(), salvarNoSheet(), criarPastaGoogleDrive()
 - **Timezone**: America/Sao_Paulo
 
@@ -189,6 +197,7 @@ npm start
 ### Erro "React is not defined"
 
 Verifique se todos os componentes importam React:
+
 ```javascript
 import React from 'react';
 ```
@@ -202,6 +211,7 @@ import React from 'react';
 ### Dashboard não autentica
 
 Confirme credenciais em `.env.local`:
+
 ```env
 VITE_DASHBOARD_LOGIN=sinistro
 VITE_DASHBOARD_PASSWORD=139702

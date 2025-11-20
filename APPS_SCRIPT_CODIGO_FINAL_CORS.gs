@@ -1,6 +1,6 @@
 // ============================================================================
-// GOOGLE APPS SCRIPT - TOPBUS SINISTROS v3.2
-// Corrigido para alinhar com colunas da planilha (incluindo Timestamp)
+// GOOGLE APPS SCRIPT - TOPBUS SINISTROS v3.3 (CORS FIX)
+// Baseado na v3.0 funcional, com remoção de Belo Monte e adição de CORS
 // ============================================================================
 
 // IDs da Planilha Google Sheets
@@ -11,19 +11,32 @@ const TOPBUS_GID = 0;
 const DRIVE_FOLDER_ID = '1Qjz3df_WZQOQmt9W_S1M25so4dsMcBT7';
 
 // ============================================================================
-// FUNÇÃO GET
+// FUNÇÃO OPTIONS (CORS) - ESSENCIAL PARA PREFLIGHT REQUESTS
 // ============================================================================
-function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    sucesso: true,
-    mensagem: "TOPBUS Sinistros API v3.2 - Funcionando",
-    status: "online",
-    timestamp: new Date().toISOString()
-  })).setMimeType(ContentService.MimeType.JSON);
+function doOptions(e) {
+  return ContentService.createTextOutput()
+    .addHeader('Access-Control-Allow-Origin', '*')
+    .addHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    .addHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
 // ============================================================================
-// FUNÇÃO POST
+// FUNÇÃO GET - Retorna status da API
+// ============================================================================
+function doGet(e) {
+  const response = ContentService.createTextOutput(JSON.stringify({
+    sucesso: true,
+    mensagem: "TOPBUS Sinistros API v3.3 - Funcionando",
+    status: "online",
+    timestamp: new Date().toISOString()
+  })).setMimeType(ContentService.MimeType.JSON);
+  
+  response.addHeader('Access-Control-Allow-Origin', '*');
+  return response;
+}
+
+// ============================================================================
+// FUNÇÃO PRINCIPAL - Receber POST do Formulário (Frontend React)
 // ============================================================================
 function doPost(e) {
   try {
@@ -38,7 +51,8 @@ function doPost(e) {
       return responderJSON(false, 'JSON inválido: ' + parseError.toString(), null);
     }
 
-    const empresa = dados.unidade || 'TOPBUS';  // Fixado TOPBUS como padrão
+    // Simplificado: Apenas TOPBUS é aceito
+    const empresa = 'TOPBUS';
     const dataHora = dados.data;
     const local = dados.local;
     const onibus = dados.numeroCarro;
@@ -47,17 +61,16 @@ function doPost(e) {
     const responsabilidade = dados.responsabilidade;
     const testemunhas = dados.testemunhas || [];
     const descricao = dados.descricao;
-    const fotos = dados.fotos || [];
 
     if (!dataHora || !local || !onibus || !responsabilidade) {
       return responderJSON(false, 'Campos obrigatórios faltando', null);
     }
 
     const culpabilidade = responsabilidade === 'MOTORISTA_TOPBUS' ? 'Motorista' : 'Terceiro';
-    const protocolo = gerarProtocolo('TOPBUS');
+    const protocolo = gerarProtocolo(empresa);
 
     const resultadoSheet = salvarNoSheet({
-      empresa: 'TOPBUS',
+      empresa: empresa,
       dataHora: dataHora,
       local: local,
       onibus: onibus,
@@ -69,93 +82,27 @@ function doPost(e) {
       protocolo: protocolo
     });
 
-    if (!resultadoSheet.sucesso) {
-      return responderJSON(false, resultadoSheet.erro, null);
-    }
-
-    let pastaCriada = null;
-    let linkPasta = '';
-    
-    try {
-      pastaCriada = criarPastaGoogleDrive({
-        empresa: 'TOPBUS',
+    if (resultadoSheet.sucesso) {
+      criarPastaGoogleDrive({
+        empresa: empresa,
+        protocolo: protocolo,
+        // Passando todos os dados para o metadata.json
         dataHora: dataHora,
         local: local,
         onibus: onibus,
         motorista: motorista,
         chapa: chapa,
         culpabilidade: culpabilidade,
-        protocolo: protocolo
+        testemunhas: testemunhas
       });
-      if (pastaCriada && pastaCriada.url) {
-        linkPasta = pastaCriada.url;
-      }
-    } catch (erroPasta) {
-      Logger.log('Erro ao criar pasta: ' + erroPasta.toString());
+
+      return responderJSON(true, 'Sinistro registrado com sucesso', {
+        protocolo: protocolo,
+        empresa: empresa
+      });
+    } else {
+      return responderJSON(false, resultadoSheet.erro, null);
     }
-
-    let linksImagens = [];
-    if (fotos.length > 0 && pastaCriada) {
-      try {
-        const pastaRaiz = DriveApp.getFolderById(DRIVE_FOLDER_ID);
-        const pastaUnidadeNome = 'TOPBUS';
-        let pastaUnidade;
-        const pastasUnidade = pastaRaiz.getFoldersByName(pastaUnidadeNome);
-        if (pastasUnidade.hasNext()) {
-          pastaUnidade = pastasUnidade.next();
-        } else {
-          pastaUnidade = pastaRaiz.createFolder(pastaUnidadeNome);
-        }
-        const pastasSinistro = pastaUnidade.getFoldersByName(protocolo);
-        let pastaSinistro;
-        if (pastasSinistro.hasNext()) {
-          pastaSinistro = pastasSinistro.next();
-        } else {
-          pastaSinistro = pastaUnidade.createFolder(protocolo);
-        }
-
-        fotos.forEach(function(foto) {
-          if (foto && foto.dados && foto.nome && foto.tipo) {
-            var base64Data = foto.dados.split(',')[1];
-            var blob = Utilities.newBlob(Utilities.base64Decode(base64Data), foto.tipo, foto.nome);
-            var arquivo = pastaSinistro.createFile(blob);
-            linksImagens.push(arquivo.getUrl());
-          }
-        });
-      } catch (erroImg) {
-        Logger.log('Erro ao salvar imagens: ' + erroImg.toString());
-      }
-    }
-
-    if (linksImagens.length > 0 || linkPasta) {
-      try {
-        const sheet = SpreadsheetApp.openById(SHEET_ID);
-        const abaNome = 'TOPBUS';
-        const aba = sheet.getSheetByName(abaNome);
-        if (aba) {
-          const dadosCol = aba.getRange(1, 2, aba.getLastRow(), 1).getValues();
-          for (let i = 0; i < dadosCol.length; i++) {
-            if (dadosCol[i][0] === protocolo) {
-              if (linksImagens.length > 0) {
-                aba.getRange(i + 1, 10).setValue(linksImagens.join(' | '));
-              }
-              if (linkPasta) {
-                aba.getRange(i + 1, 11).setValue(linkPasta);
-              }
-              break;
-            }
-          }
-        }
-      } catch (erroPlanilha) {
-        Logger.log('Erro ao atualizar links de imagens: ' + erroPlanilha.toString());
-      }
-    }
-
-    return responderJSON(true, 'Sinistro registrado com sucesso', {
-      protocolo: protocolo,
-      empresa: 'TOPBUS',
-      imagens: linksImagens
-    });
 
   } catch (erro) {
     Logger.log('Erro em doPost: ' + erro.toString());
@@ -164,22 +111,27 @@ function doPost(e) {
 }
 
 // ============================================================================
-// RESPONDER JSON
+// FUNÇÃO AUXILIAR - Responder em JSON (com CORS)
 // ============================================================================
 function responderJSON(sucesso, mensagem, dados) {
   const resposta = {
     sucesso: sucesso,
     mensagem: mensagem
   };
+  
   if (dados) {
     resposta.dados = dados;
   }
-  return ContentService.createTextOutput(JSON.stringify(resposta))
+  
+  const response = ContentService.createTextOutput(JSON.stringify(resposta))
     .setMimeType(ContentService.MimeType.JSON);
+    
+  response.addHeader('Access-Control-Allow-Origin', '*');
+  return response;
 }
 
 // ============================================================================
-// GERAR PROTOCOLO
+// GERAR PROTOCOLO ÚNICO (Simplificado para TOPBUS)
 // ============================================================================
 function gerarProtocolo(empresa) {
   const agora = new Date();
@@ -195,72 +147,52 @@ function gerarProtocolo(empresa) {
 }
 
 // ============================================================================
-// SALVAR NO SHEETS - CORRIGIDO PARA TIMESTAMP NA COLUNA A
-// Ordem: Timestamp (auto) | ID | DataHora | Local | Onibus | Motorista | Chapa |
-//        Terceiro | Testemunhas | Descricao | Imagens | PastaLink
+// SALVAR NO GOOGLE SHEETS (Simplificado para TOPBUS)
 // ============================================================================
 function salvarNoSheet(dados) {
   try {
     const sheet = SpreadsheetApp.openById(SHEET_ID);
     const abaNome = 'TOPBUS';
-    
     let aba = sheet.getSheetByName(abaNome);
+
     if (!aba) {
       aba = sheet.insertSheet(abaNome);
       aba.appendRow([
-        'Timestamp',
-        'ID',
-        'DataHora',
-        'Local',
-        'Onibus',
-        'Motorista',
-        'Chapa',
-        'Terceiro',
-        'Testemunhas',
-        'Descricao',
-        'Imagens',
-        'PastaLink'
+        'ID', 'DataHora', 'Local', 'Onibus', 'Motorista', 'Chapa',
+        'Terceiro', 'Testemunhas', 'Descricao', 'Imagens', 'PastaLink'
       ]);
     }
 
-    const testemunhasStr = (Array.isArray(dados.testemunhas) ? dados.testemunhas
+    const testemunhasStr = (dados.testemunhas || [])
       .map(t => `${t.nome} - ${t.telefone}`)
-      .join(' | ') : '');
+      .join(' | ');
 
-    // IMPORTANTE: Timestamp é gerado automaticamente pelo Google Sheets
-    // Não incluir Timestamp no array - o Sheets adiciona automaticamente
     const novaLinha = [
-      dados.protocolo,                    // ID
-      dados.dataHora,                     // DataHora
-      dados.local,                        // Local
-      dados.onibus,                       // Onibus
-      dados.motorista,                    // Motorista
-      dados.chapa || '',                  // Chapa (estava faltando!)
-      dados.culpabilidade,                // Terceiro
-      testemunhasStr,                     // Testemunhas
-      dados.descricao,                    // Descricao
-      '',                                 // Imagens
-      ''                                  // PastaLink
+      dados.protocolo,
+      dados.dataHora,
+      dados.local,
+      dados.onibus,
+      dados.motorista,
+      dados.chapa,
+      dados.culpabilidade,
+      testemunhasStr,
+      dados.descricao,
+      '',
+      ''
     ];
 
     aba.appendRow(novaLinha);
 
-    return {
-      sucesso: true,
-      protocolo: dados.protocolo
-    };
+    return { sucesso: true, protocolo: dados.protocolo };
 
   } catch (erro) {
     Logger.log('Erro ao salvar no Sheet: ' + erro.toString());
-    return {
-      sucesso: false,
-      erro: `Erro ao salvar no Sheet: ${erro.toString()}`
-    };
+    return { sucesso: false, erro: `Erro ao salvar no Sheet: ${erro.toString()}` };
   }
 }
 
 // ============================================================================
-// CRIAR PASTA NO DRIVE
+// CRIAR PASTA NO GOOGLE DRIVE (Simplificado para TOPBUS)
 // ============================================================================
 function criarPastaGoogleDrive(dados) {
   try {
@@ -277,9 +209,9 @@ function criarPastaGoogleDrive(dados) {
 
     const pastaSinistro = pastaUnidade.createFolder(dados.protocolo);
 
-    const testemunhasStr = dados.testemunhas && dados.testemunhas.length > 0
-      ? dados.testemunhas.map(t => `${t.nome} - ${t.telefone}`).join(' | ')
-      : '';
+    const testemunhasStr = (dados.testemunhas || [])
+      .map(t => `${t.nome} - ${t.telefone}`)
+      .join(' | ');
 
     const metadataJson = {
       protocolo: dados.protocolo,
@@ -301,17 +233,11 @@ function criarPastaGoogleDrive(dados) {
     );
     pastaSinistro.createFile(blob);
 
-    return {
-      sucesso: true,
-      url: pastaSinistro.getUrl()
-    };
+    return true;
 
   } catch (erro) {
     Logger.log(`Erro ao criar pasta Drive: ${erro.toString()}`);
-    return {
-      sucesso: false,
-      url: null
-    };
+    return false;
   }
 }
 
@@ -322,19 +248,15 @@ function testDoPost() {
   const testData = {
     postData: {
       contents: JSON.stringify({
-        unidade: 'TOPBUS',
-        data: '2025-11-20T10:00',
-        local: 'Av. Paulista, 1000 - São Paulo, SP',
-        numeroCarro: 'TB-2450',
-        motorista: 'Carlos Mendes Silva',
-        chapa: '2450',
-        responsabilidade: 'TERCEIRO',
-        testemunhas: [
-          { nome: 'Maria Santos', telefone: '(11) 99876-5432' },
-          { nome: 'Roberto Costa', telefone: '(11) 97654-3210' }
-        ],
-        descricao: 'Teste de colisão lateral',
-        fotos: []
+        unidade: 'TOPBUS', // Este campo será ignorado, mas mantido para teste
+        data: '2025-11-20T15:00',
+        local: 'Av. Faria Lima, 4500 - São Paulo, SP',
+        numeroCarro: 'TB-5555',
+        motorista: 'Joana D\'arc',
+        chapa: '5555',
+        responsabilidade: 'MOTORISTA_TOPBUS',
+        testemunhas: [{ nome: 'Pedro Alvares', telefone: '(21) 91234-5678' }],
+        descricao: 'Teste de colisão traseira.'
       })
     }
   };

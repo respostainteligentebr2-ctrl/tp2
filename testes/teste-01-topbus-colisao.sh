@@ -5,7 +5,7 @@
 # Teste básico com dados da unidade TOPBUS
 # =============================================================================
 
-API_URL="https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec"
+API_URL="https://script.google.com/macros/s/AKfycbw0UZ26acbgzPjAqpSuDSp3HRSqzg1LJuO2vlSN7CvakmSKo7lZ1PwGyqT8ve9Ueu1Stg/exec"
 API_KEY="a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812"
 
 # Dados do sinistro TOPBUS #1
@@ -34,7 +34,7 @@ echo ""
 echo "Enviando dados para o Apps Script..."
 echo ""
 
-RESPONSE=$(curl -s -X POST "$API_URL" \
+RESPONSE=$(curl -s -L -X POST "$API_URL" \
   -H "Content-Type: application/json" \
   -d "$PAYLOAD")
 

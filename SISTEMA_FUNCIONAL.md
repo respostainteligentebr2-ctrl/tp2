@@ -31,16 +31,19 @@
 ## 🔗 URLs E CREDENCIAIS
 
 ### Apps Script API v5
+
 ```
 https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
 ```
 
 ### Google Sheets
+
 - **Planilha:** [Análise de Sinistro TopBus](https://docs.google.com/spreadsheets/d/1ZtatcnU7jwHXrso5mSIMRFQIFFUhsihUyGvRK36klSo)
 - **ID:** `1ZtatcnU7jwHXrso5mSIMRFQIFFUhsihUyGvRK36klSo`
 - **Abas:** TOPBUS (gid=0), BELO_MONTE (gid=760103440)
 
 ### Google Drive
+
 - **Pasta:** [Arquivos](https://drive.google.com/drive/folders/1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4)
 - **ID:** `1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4`
 
@@ -49,6 +52,7 @@ https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQE
 ## 📊 INTEGRAÇÃO COMPLETA
 
 ### Backend (Apps Script)
+
 ```javascript
 // Funções implementadas:
 ✅ doGet()          // Status da API
@@ -59,6 +63,7 @@ https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQE
 ```
 
 ### Mapeamento de Campos (Frontend → Backend)
+
 ```javascript
 {
   unidade: "TOPBUS" | "BELO_MONTE"  → empresa
@@ -70,12 +75,14 @@ https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQE
 ```
 
 ### Estrutura do Sheets
+
 ```
 Colunas: ID | DataHora | Local | Onibus | Motorista | Chapa | 
          Terceiro | Testemunhas | Descricao | Imagens | PastaLink
 ```
 
 ### Estrutura do Drive
+
 ```
 Arquivos/
 ├── TOPBUS/
@@ -91,6 +98,7 @@ Arquivos/
 ## 🧪 TESTES AUTOMATIZADOS
 
 ### Arquivos de Teste (12 scripts)
+
 ```bash
 # Bash
 testes/teste-01-topbus-colisao.sh
@@ -109,6 +117,7 @@ testes/teste-completo.ps1
 ```
 
 ### Executar Todos os Testes
+
 ```bash
 cd /workspaces/topbusanalise/testes
 bash teste-completo.sh
@@ -119,12 +128,14 @@ bash teste-completo.sh
 ## 🚀 PRÓXIMAS AÇÕES
 
 ### 1. Verificar Dados no Google
+
 - [ ] Abrir [Google Sheets](https://docs.google.com/spreadsheets/d/1ZtatcnU7jwHXrso5mSIMRFQIFFUhsihUyGvRK36klSo)
 - [ ] Verificar protocolo `SIN-TB-20251113-051706-6550` na aba TOPBUS
 - [ ] Abrir [Google Drive](https://drive.google.com/drive/folders/1AQFiXi9-xDulKgO-qZCF3tRrBIsrWcf4)
 - [ ] Verificar pasta `TOPBUS/SIN-TB-20251113-051706-6550/`
 
 ### 2. Testar Frontend React
+
 ```bash
 cd /workspaces/topbusanalise
 npm install
@@ -132,6 +143,7 @@ npm start
 ```
 
 ### 3. Executar Testes Externos
+
 ```bash
 # Teste GET (Status da API)
 curl -s "https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec"
@@ -144,6 +156,7 @@ bash /workspaces/topbusanalise/testes/teste-03-belomonte-colisao-frontal.sh
 ```
 
 ### 4. Deploy Netlify (Opcional)
+
 - Conectar repositório GitHub ao Netlify
 - Adicionar variáveis de ambiente:
   - `REACT_APP_APPS_SCRIPT_URL`
@@ -155,6 +168,7 @@ bash /workspaces/topbusanalise/testes/teste-03-belomonte-colisao-frontal.sh
 ## 📚 DOCUMENTAÇÃO ADICIONAL
 
 Arquivos de referência criados:
+
 - `APPS_SCRIPT_CODIGO.gs` - Código completo (325 linhas)
 - `appsscript.json` - Configurações do projeto
 - `APPS_SCRIPT_V3_DEPLOY.md` - Guia de implantação
@@ -168,12 +182,14 @@ Arquivos de referência criados:
 ## 🔧 CONFIGURAÇÃO TÉCNICA
 
 ### Arquivo `.env.local`
+
 ```env
 REACT_APP_APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbzWN0zjwL0iN_4WuDIbl7W-foaf3ckIJO_YmByQEt-PpnQpWR5HcQtT1OcBK4DS79Q5LA/exec
 REACT_APP_API_KEY=a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d4584812
 ```
 
 ### Arquivo `appsscript.json`
+
 ```json
 {
   "timeZone": "America/Sao_Paulo",
@@ -192,18 +208,21 @@ REACT_APP_API_KEY=a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d45848
 ## 🎯 STACK TECNOLÓGICA
 
 **Frontend:**
+
 - React 18
 - Vite (build tool)
 - Tailwind CSS
 - Axios (HTTP)
 
 **Backend:**
+
 - Google Apps Script (V8 runtime)
 - Google Sheets API
 - Google Drive API
-
 **Deploy:**
+
 - Frontend: Netlify
+- Backend: Google Cloud (Apps Script)
 - Backend: Google Cloud (Apps Script)
 
 ---
@@ -211,21 +230,27 @@ REACT_APP_API_KEY=a03f60d688b3b52900e5cd8faa74a4d5c4a551e27d02828e4f11e0d5d45848
 ## ✨ CORREÇÕES IMPLEMENTADAS
 
 ### Problema 1: HTTP 302 Redirect
+
 **Solução:** Adicionar arquivo `appsscript.json` com configurações corretas
 
 ### Problema 2: "Script function not found: doGet"
+
 **Solução:** Implementar função `doGet()` para status da API
 
 ### Problema 3: "Cannot read properties of undefined (reading 'map')"
+
 **Solução:** Validar array `testemunhas` antes de usar `.map()`
 
 ### Problema 4: Nomenclatura de campos
+
 **Solução:** Criar camada de mapeamento em `doPost()`:
+
 - `unidade` → `empresa`
 - `numeroCarro` → `onibus`
 - `responsabilidade` → `culpabilidade`
 
 ### Problema 5: Ordem de colunas no Sheets
+
 **Solução:** Ajustar ordem em `salvarNoSheet()` para corresponder à estrutura existente
 
 ---

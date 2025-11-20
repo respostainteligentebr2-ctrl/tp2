@@ -33,8 +33,8 @@ echo "📊 Resumo dos testes que serão executados:"
 echo ""
 echo "  1️⃣  TOPBUS - Colisão lateral (Terceiro culpado)"
 echo "  2️⃣  TOPBUS - Danos em estacionamento (Motorista culpado)"
-echo "  3️⃣  BELO MONTE - Colisão frontal (Terceiro culpado)"
-echo "  4️⃣  BELO MONTE - Ferimento em passageiro (Motorista culpado)"
+echo "  3️⃣  [REMOVIDO] Teste Belo Monte"
+echo "  4️⃣  [REMOVIDO] Teste Belo Monte"
 echo "  5️⃣  [ADICIONAL] Teste de validação de campo obrigatório"
 echo ""
 echo "─────────────────────────────────────────────────────────────────────────────"
@@ -72,22 +72,22 @@ fi
 echo ""
 
 # Teste 3
-if [ -f "$SCRIPT_DIR/teste-03-belomonte-colisao-frontal.sh" ]; then
-  bash "$SCRIPT_DIR/teste-03-belomonte-colisao-frontal.sh"
-  sleep 2
-else
-  echo "❌ teste-03-belomonte-colisao-frontal.sh não encontrado"
-fi
+# if [ -f "$SCRIPT_DIR/teste-03-belomonte-colisao-frontal.sh" ]; then
+#   bash "$SCRIPT_DIR/teste-03-belomonte-colisao-frontal.sh"
+#   sleep 2
+# else
+#   echo "❌ teste-03-belomonte-colisao-frontal.sh não encontrado"
+# fi
 
 echo ""
 
 # Teste 4
-if [ -f "$SCRIPT_DIR/teste-04-belomonte-passageiro.sh" ]; then
-  bash "$SCRIPT_DIR/teste-04-belomonte-passageiro.sh"
-  sleep 2
-else
-  echo "❌ teste-04-belomonte-passageiro.sh não encontrado"
-fi
+# if [ -f "$SCRIPT_DIR/teste-04-belomonte-passageiro.sh" ]; then
+#   bash "$SCRIPT_DIR/teste-04-belomonte-passageiro.sh"
+#   sleep 2
+# else
+#   echo "❌ teste-04-belomonte-passageiro.sh não encontrado"
+# fi
 
 echo ""
 echo "─────────────────────────────────────────────────────────────────────────────"
@@ -97,8 +97,8 @@ echo "║                                                                       
 echo "║                    ✅ TODOS OS TESTES CONCLUÍDOS!                         ║"
 echo "║                                                                            ║"
 echo "║  Verifique:                                                               ║"
-echo "║  1. Google Sheets - Abas TOPBUS e BELO MONTE preenchidas                 ║"
-echo "║  2. Google Drive - Pastas de sinistros criadas                           ║"
+echo "║  1. Google Sheets - Aba TOPBUS preenchida                               ║"
+echo "║  2. Google Drive - Pastas de sinistros criadas                          ║"
 echo "║  3. Console - Verifique respostas acima                                  ║"
 echo "║                                                                            ║"
 echo "╚════════════════════════════════════════════════════════════════════════════╝"

@@ -2,7 +2,8 @@
 
 ## ✅ O que foi corrigido na v3.2
 
-### Melhorias principais:
+### Melhorias principais
+
 - ✅ **Timestamp automático** adicionado como primeira coluna
 - ✅ Campo **Chapa** corrigido (estava faltando no array)
 - ✅ Ordem de colunas alinhada com planilha real
@@ -24,6 +25,8 @@
 ### Apps Script → Google Sheets
 
 A ordem das colunas foi **corrigida** para incluir Timestamp:
+
+Timestamp | ID | DataHora | Local | Onibus | Motorista | Chapa | Terceiro | Testemunhas | Descricao | Imagens | PastaLink
 
 ```
 Timestamp | ID | DataHora | Local | Onibus | Motorista | Chapa | Terceiro | Testemunhas | Descricao | Imagens | PastaLink
