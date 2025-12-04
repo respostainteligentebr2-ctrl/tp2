@@ -1,6 +1,7 @@
 [build]
-  publish = "dist"
-  command = "npm run build"
+  base = "topbus-sinistros"
+  publish = "build"
+  command = "npm --prefix topbus-sinistros run build"
 
 [[redirects]]
   from = "/*"
