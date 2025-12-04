@@ -38,6 +38,24 @@
 └─────────────────────────────────────────────────────────────┘
 
 ⏰ TEMPO TOTAL: ~15 MINUTOS
+
+---
+
+## 🔔 Status do Deploy (Badge)
+
+Para acompanhar o status de deploy rapidamente, utilize o badge do Netlify.
+
+Badge de exemplo já inserido no `README.md`:
+
+```markdown
+[![Netlify Status](https://api.netlify.com/api/v1/badges/995a44b6-81cb-4918-9239-1d21f45027ec/deploy-status)](https://app.netlify.com/projects/sinistrotp/deploys)
+```
+
+Como obter um badge para seu site Netlify:
+1. Acesse Netlify → Site → Site settings → Deploys → Build badges.
+2. Copie a URL do badge e cole no `README.md` ou onde quiser mostrar o status.
+
+---
 ```
 
 ---
