@@ -1,6 +1,7 @@
 import React from "react";
 import FormularioSinistro from "./components/FormularioSinistro";
 import ListaSinistros from "./components/ListaSinistros";
+import ThemeToggle from "./components/ThemeToggle";
 
 const API_URL = process.env.REACT_APP_APPS_SCRIPT_URL;
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -81,20 +82,23 @@ const App = () => {
   };
 
   return (
-    <main className="min-h-screen bg-slate-100 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4">
-        <FormularioSinistro
-          onSubmit={registrarSinistro}
-          onSuccess={() => carregarRegistros()}
-        />
-        <ListaSinistros
-          registros={registros}
-          carregando={carregandoLista}
-          erro={erroLista}
-          onRefresh={carregarRegistros}
-        />
-      </div>
-    </main>
+    <>
+      <ThemeToggle />
+      <main className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--bg-primary)' }}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10">
+          <FormularioSinistro
+            onSubmit={registrarSinistro}
+            onSuccess={() => carregarRegistros()}
+          />
+          <ListaSinistros
+            registros={registros}
+            carregando={carregandoLista}
+            erro={erroLista}
+            onRefresh={carregarRegistros}
+          />
+        </div>
+      </main>
+    </>
   );
 };
 
