@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, X, ChevronDown } from 'lucide-react';
+import GravadorAudio from './GravadorAudio';
 
 export default function FormularioSinistro() {
   const [unidade, setUnidade] = useState('');
@@ -13,13 +14,13 @@ export default function FormularioSinistro() {
   const [testemunhas, setTestemunhas] = useState([{ nome: '', telefone: '' }]);
   const [descricao, setDescricao] = useState('');
   const [fotos, setFotos] = useState([]);
+  const [audioBlob, setAudioBlob] = useState(null);
 
   const empresas = [
     { id: 'BELO_MONTE', nome: 'Belo Monte Transportes' },
     { id: 'TOPBUS', nome: 'Consórcio Metropolitano' }
   ];
 
-  // Garante que sempre há pelo menos uma opção
   const opcoesEmpresa = empresas.length > 0 ? empresas : [
     { id: 'GENERICA', nome: 'Empresa' }
   ];
@@ -54,6 +55,16 @@ export default function FormularioSinistro() {
     setFotos(fotos.filter((_, i) => i !== index));
   };
 
+  const handleTranscricao = (texto) => {
+    if (texto && !descricao) {
+      setDescricao(texto);
+    }
+  };
+
+  const handleAudioBlob = (blob) => {
+    setAudioBlob(blob);
+  };
+
   const handleSubmit = async () => {
     if (!unidade || !data || !local || !numeroCarro || !responsabilidade) {
       alert('Preencha todos os campos obrigatórios.');
@@ -73,7 +84,8 @@ export default function FormularioSinistro() {
       chapa,
       responsabilidade,
       testemunhas,
-      descricao
+      descricao,
+      temAudio: !!audioBlob
     };
 
     try {
@@ -115,6 +127,7 @@ export default function FormularioSinistro() {
       }
     });
     setFotos([]);
+    setAudioBlob(null);
   };
 
   const coresUnidade = unidade === 'TOPBUS' 
@@ -536,18 +549,36 @@ export default function FormularioSinistro() {
                   </button>
                 </div>
 
-                {/* Descrição */}
+                {/* Descrição com Áudio */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Descrição Detalhada
-                  </label>
-                  <textarea
-                    value={descricao}
-                    onChange={(e) => setDescricao(e.target.value)}
-                    placeholder="Descreva os detalhes da ocorrência, circunstâncias e informações relevantes..."
-                    rows={6}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl input-focus resize-none text-sm"
-                  />
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    Descrição da Ocorrência
+                    <div className="h-0.5 flex-1 bg-gradient-to-r from-gray-300 to-transparent"></div>
+                  </h3>
+                  
+                  {/* Gravador de Áudio */}
+                  <div className="mb-4">
+                    <GravadorAudio 
+                      onTranscricao={handleTranscricao}
+                      onAudioBlob={handleAudioBlob}
+                      corPrimaria={coresUnidade.primary}
+                    />
+                  </div>
+
+                  {/* Campo de Texto */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Descrição em Texto
+                      <span className="font-normal text-gray-500 ml-2">(edite a transcrição ou digite manualmente)</span>
+                    </label>
+                    <textarea
+                      value={descricao}
+                      onChange={(e) => setDescricao(e.target.value)}
+                      placeholder="Descreva os detalhes da ocorrência, circunstâncias e informações relevantes..."
+                      rows={6}
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl input-focus resize-none text-sm"
+                    />
+                  </div>
                 </div>
 
                 {/* Botões de Ação */}
