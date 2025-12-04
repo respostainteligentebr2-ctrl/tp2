@@ -1,10 +1,11 @@
 ﻿import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://howaipkfjdtvdyvekwyok.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhvd2Fwa2ZqZHR2ZHl2ZWt3eW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NjMyMTUsImV4cCI6MjA4MDAzOTIxNX0.NHrVzRqktCvAO6NKms8uy_Aie5zkWiojQ3m_bCLcYCw'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables')
+  console.error('❌ Missing Supabase environment variables')
+  console.error('Configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local')
   throw new Error('Supabase configuration error')
 }
 
@@ -12,22 +13,23 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
+    storage: window.localStorage
   },
   realtime: {
     enabled: true
   }
 })
 
-// Test connection
+// Test connection (non-blocking)
 supabase.from('sinistros').select('count', { count: 'exact', head: true })
   .then(({ error }) => {
     if (!error) {
-      console.log(' Supabase connected successfully')
+      console.log('✓ Supabase connected successfully')
     } else {
-      console.log(' Supabase connected - table setup needed')
+      console.warn('⚠ Supabase connection check: table may not exist yet')
     }
   })
-  .catch(() => {
-    console.log(' Supabase connection check failed')
+  .catch((err) => {
+    console.warn('⚠ Supabase connection check failed:', err.message)
   })
